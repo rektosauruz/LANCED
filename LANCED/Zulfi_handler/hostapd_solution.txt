@@ -1,0 +1,2 @@
+### in this manual, hostapd will be structured to work without
+###  interference of dhcpcd
