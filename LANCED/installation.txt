@@ -1,0 +1,253 @@
+POST-INSTALLATION
+=================
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get dist-upgrade
+sudo apt-get install gpsd
+sudo apt-get install gpsd-clients
+sudo apt-get install sqlite3
+sudo apt-get install libncurses5 libncurses5-dev
+sudo apt-get install libnl1 libnl-dev
+sudo apt-get install libpcap-dev libpcap0.8 libpcap0.8-dev
+sudo apt-get install hostapd
+sudo apt-get install dnsmasq
+sudo apt-get install php
+sudo apt-get install apache2
+sudo apt-get install php7.0-sqlite3
+sudo apt-get install libapache2-mod-php7
+sudo apt-get install kismet
+
+#kismet user set as not root
+#enter pi as user
+#sudo usermod -a -G kismet pi
+
+#OPTIONAL#
+gpxsee
+openstreetmap
+#OPTIONAL#
+==================
+
+
+
+KISMET-CONFIGURATION
+=================
+#Kismet config file modified for Zulfikar with two(2)
+#TP-LINK TL-WN722N wireless NICs and a pl2303 GPS module.
+#FILE LOCATION = /etc/kismet/kismet.conf
+
+
+#create kismet log folder
+sudo mkdir /home/pi/zulfi_logs
+chmod 777 /home/pi/zulfi_logs
+
+
+#change line in kismet.conf
+# Prefix of where we log (as used in the logtemplate later)
+logprefix=/home/pi/zulfi_logs
+
+
+#change line in kismet.conf ncsource
+ncsource=wlan1:type=ath5k
+ncsource=wlan2:type=ath5k
+forcevif=true
+
+##alternative ncsource
+#ncsource=wlan1:type=mac80211
+#ncsource=wlan2:type=mac80211
+
+
+#change line in kismet.conf OUI location
+# OUI file, expected format 00:11:22<tab>manufname
+# IEEE OUI file used to look up manufacturer info.  We default to the
+# wireshark one since most people have that.
+ouifile=/etc/kismet/oui2.txt
+#ouifile=/etc/manuf
+#ouifile=/usr/share/wireshark/wireshark/manuf
+#ouifile=/usr/share/wireshark/manuf
+#ouifile=/Applications/Wireshark.app/Contents/Resources/share/wireshark/manuf
+
+
+#change line in kismet.conf GPS
+gps=true
+gpstype=gpsd
+gpsdevice=/dev/ttyUSB0
+gpshost=localhost:2947
+
+
+#change line in kismet.conf packet Filtering
+#!!!!#get wlan0 mac string here for correcting the kismet.conf file
+filter_tracker=BSSID(!--:--:--:--:--:--)
+=================
+
+
+
+ZVLFIKAR-REQUIRED FOLDERS
+=================
+#to use kismet with zulfikar(a.sh), some folders must be placed
+#FOLDER LOCATION = /home/pi/zulfi_logs
+#FOLDER LOCATION = /home/pi/zulfi_arch
+#FILE LOCATION = /home/pi/zulfi_arch/BSSID.list
+#FILE LOCATION = /home/pi/zulfi_arch/datapool.txt
+sudo mkdir /home/pi/zulfi_logs
+sudo chmod 777 /home/pi/zulfi_logs
+sudo mkdir /home/pi/zulfi_arch
+sudo chmod 777 /home/pi/zulfi_arch
+sudo touch /home/pi/zulfi_arch/BSSID.list
+sudo chmod 777 /home/pi/zulfi_arch/BSSID.list
+sudo touch /home/pi/zulfi_arch/datapool.txt
+sudo chmod 777 /home/pi/zulfi_arch/datapool.txt
+=================
+
+
+
+GPSD-CONFIGURATION
+=================
+#gpsd file modified for kismet to read data from
+#FILE LOCATION = /etc/default/gpsd
+
+START_DAEMON="false"
+USBAUTO="true"
+DEVICES="/dev/ttyUSB0"
+GPSD_OPTIONS="-n -G -b"
+GPSD_SOCKET="/var/run/gpsd.sock"
+sudo killall gpsd
+sudo /etc/init.d/gpsd.start
+=================
+
+
+
+DHCPCD.CONF-CONFIGURATION
+=================
+#dhcpcd file modified for wlan1 and wlan2, wpa_supplicant is not
+#active while denyinterfaces [wlan-] line active
+#FILE LOCATION = /etc/dhcpcd.conf
+denyinterfaces wlan1
+denyinterfaces wlan2
+=================
+
+
+
+HOSTAPD-CONFIGURATION
+=================
+#for hostapd, a second change is made on /etc/dhcpcd.conf
+#FILE LOCATION = /etc/dhcpcd.conf
+sudo nano /etc/dhcpcd.conf
+denyinterfaces wlan0
+
+#interfaces file is changed for wlan0
+#FILE LOCATION = /etc/network/interfaces
+sudo nano /etc/network/interfaces
+allow-hotplug wlan0
+iface wlan0 inet static
+address 172.24.1.1
+netmask 255.255.255.0
+network 172.24.1.0
+broadcast 172.24.1.255
+
+after changes run dhcpcd restart
+sudo service dhcpcd restart
+sudo ifdown wlan0
+
+#configure hostapd.conf to define AP specs.
+#FILE LOCATION = /etc/hostapd/hostapd.conf
+sudo nano /etc/hostapd/hostapd.conf
+interface=wlan0
+driver=nl80211
+ssid=ZFrontlines
+hw_mode=g
+channel=6
+ieee80211n=1
+wmm_enabled=1
+ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_passphrase=zulf1k@r
+rsn_pairwise=CCMP
+
+#test hostapd in terminal
+sudo /usr/sbin/hostapd /etc/hostapd/hostapd.conf
+
+#configure hostapd for daemon configuration
+#FILE LOCATION = /etc/default/hostapd
+sudo nano /etc/default/hostapd
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+=================
+
+
+
+DNSMASQ-CONFIGURATION
+=================
+#configure dnsmasq
+#FILE LOCATION = /etc/dnsmasq.conf
+
+#backup dnsmasq.conf
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+
+#add lines to dnsmasq.conf
+sudo nano /etc/dnsmasq.conf
+interface=wlan0
+listen-address=172.24.1.1
+bind-interfaces
+server=8.8.8.8
+domain-needed
+bogus-priv
+dhcp-range=172.24.1.50,172.24.1.150,12h
+=================
+
+
+
+IPv4 FORWARDING
+=================
+#configure sysctl.conf file
+#FILE LOCATION = /etc/sysctl.conf
+#change line #net.ipv4.ip_forward=1
+sudo nano /etc/sysctl.conf
+net.ipv4.ip_forward=1
+
+#terminal commands to set rules with iptables, saved for persistent usage
+sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+sudo sh -c "iptables-save > /etc/iptables.ipv4.nat
+
+/etc/iptables.ipv4.nat backup this file for later
+
+#configure rc.local file
+#FILE LOCATION = /etc/rc.local
+#add iptables-restore < /etc/iptables.ipv4.nat command above exit 0 line
+
+sudo nano /etc/rc.local
+#
+iptables-restore < /etc/iptables.ipv4.nat
+exit 0
+#
+
+##start hostapd and dnsmasq services
+sudo service hostapd start
+sudo service dnsmasq start
+=================
+
+
+
+START SSH - SET PORT
+=================
+#FILE LOCATION = /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
+change line PORT={}
+
+to allow ssh use
+sudo raspi-config
+=================
+
+
+
+SET SYSTEM TIME
+=================
+to set system local time use
+raspi-config
+choose time and zone
+=================

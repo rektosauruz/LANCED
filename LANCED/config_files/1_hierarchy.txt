@@ -1,0 +1,47 @@
+##files and folder are described here with locations for ease of use
+#/home/pi/zulfi_logs/                    [raw data files are saved here from kismet_server.]
+#/home/pi/zulfi_arch/                    [files are transferred after each run to this location to be processed.]
+#/home/pi/zulfi_arch/{date}/             [a dated folder is created for that day.]
+#/home/pi/zulfi_arch/BSSID.list          [unique MACs are held here for counting and comparison for uniqueness.]
+#/home/pi/zulfi_arch/datapool.txt        [datapool.txt holds the unique data, populated after each run, a simple database file holds raw data.]
+#/home/pi/zulfi_arch/temp.list           [for each run MACs in the respective .nettxt file are passed to temp.list for comparison with BSSID.list]
+#/home/pi/zulfi_arch_processed/          [processed files are saved here under the same respective dates.]
+#/home/pi/zulfi_arch_processed/{date}/   [dated folders are directly transferred under prcessed section after the sequence.]
+#/home/pi/etc/kismet/timechk             [timechk file is created after the first date correction, at the end of each run, this file is removed.]
+
+
+#/home/pi/etc/kismet/
+#/home/pi/etc/kismet/kismet.conf
+#/home/pi/etc/kismet/oui2.txt
+#/home/pi/etc/kismet/correct_date.py
+
+
+#/home/pi/zulfi_arch/
+#/home/pi/zulfi_arch/BSSID.list
+#/home/pi/zulfi_arch/datapool.txt
+#/home/pi/zulfi_arch/temp.list
+#/home/pi/zulfi_arch/processed/
+
+
+####/home/pi/etc/####
+#/home/pi/etc/dnsmasq.conf
+#/home/pi/etc/dhcpcd.conf
+#/home/pi/etc/sysctl.conf
+#/home/pi/etc/rc.local
+
+
+####/home/pi/etc/default####
+#/home/pi/etc/default/gpsd
+#/home/pi/etc/default/hostapd
+
+
+####/home/pi/etc/network/####
+#/home/pi/etc/network/interfaces
+
+
+####/home/pi/etc/hostapd/###
+#/home/pi/etc/hostapd/hostapd.conf
+
+
+####/home/pi/etc/ssh/###
+#/home/pi/etc/ssh/sshd_config

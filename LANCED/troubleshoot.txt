@@ -1,0 +1,44 @@
+1.ISSUE
+kismet_server error message : wlan1 or wlan2 busy
+SOLUTION
+wireless cards wlan1 and must be excluded in /etc/dhcpcd.conf
+add these line at the end of the file
+sudo nano /etc/dhcpcd.conf
+denyinterfaces wlan1
+denyinterfaces wlan2
+
+
+2.ISSUE
+kismet_server error message : invalid json data block from
+GPSD: Unexpected symbol '\' at position 68/98
+SOLUTION
+gpspipe >> Desktop/testfile.txt
+invalid json data block from GPSD: Unexpected symbol '\' at position 68/98
+{"class":"VERSION","release":"3.16","rev":"3.16-4","proto_major":3,"proto_minor":11}
+{"class":"DEVICES","devices":[{"class":"DEVICE","path":"/dev/ttyUSB0","driver":"SiRF","subtype":"6\u0006GSD4e_4.1.2-P1 R+ 11/15/2011 319-Nov 15 2011-23:04:55","activated":"2018-06-01T18:26:44.603Z","flags":1,"native":1,"bps":4800,"parity":"N","stopbits":1,"cycle":1.00}]}
+{"class":"WATCH","enable":true,"json":false,"nmea":true,"raw":0,"scaled":false,"timing":false,"split24":false,"pps":false}
+
+line 98 is \
+"subtype":"6\u0006GSD4e_4.1.2-P1 R+ 11/15/2011 319-Nov 15 2011-23:04:55"
+driver SiRF subtype can be avoided by running the GPSD by -n option,
+
+add line to gpsd
+GPSD_OPTIONS="-n -G -b"
+
+
+3.ISSUE
+Rpi init error with dhcp is not run for all interfaces
+https://superuser.com/questions/924166/dhcp-failure-when-rebooting-rpi-2
+SOLUTION
+to fix multi dhcpcs.service problem causing error at rpi init
+list the dhcp by
+dpkg -l | grep dhcp
+sudo systemctl disable dhcpcd.service
+reboot
+
+
+4.ISSUE 
+wireless adapter starting problem
+SOLUTION
+to overcome wireless adapter starting problem use
+sudo rpi-update
