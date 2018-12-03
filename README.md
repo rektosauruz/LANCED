@@ -36,8 +36,8 @@ librtl is not able to tune to specified frequency.
 
 
 TO-DO LIST
-** SCENARIO
-** APPENDIX
+** SCENARIO ok
+** APPENDIX ok
 ** LANCED PANEL
 ** sqlite3 database
 ** kismet - blue_hydra - rtl_433 ==== > database integration
