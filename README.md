@@ -28,22 +28,24 @@ seems there is no issue with merbanan/rtl_433
 #there is an issue with merbanan/rtl_433
 ```
 
+```
 ## NOT CRITICAL ##
 PLL not locked error issuing caused by not properly compiled drivers
 such as rtl_sdr libs, must recompile rtl_433 after.
 librtl is not able to tune to specified frequency.
 ## NOT CRITICAL ##
+```
 
-
+```
 TO-DO LIST
 ** SCENARIO ok
 ** APPENDIX ok
 ** LANCED PANEL
 ** sqlite3 database
 ** kismet - blue_hydra - rtl_433 ==== > database integration
+```
 
-
-
+```
 sqlite3 data integration
 
 TABLE 1
@@ -51,3 +53,4 @@ METHOD--------MAC------MANUF------LOCATION-----DATE
 WIFI                  
 BLUETOOTH
 subGhz
+```
