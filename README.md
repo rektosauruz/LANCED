@@ -2,6 +2,14 @@
 ##test
 ##overall progress listed##
 
+# LINKS
+
+https://github.com/merbanan/rtl_433/blob/master/BUILDING.md
+https://github.com/pwnieexpress/blue_hydra
+
+
+
+
 
 Program          status
 
