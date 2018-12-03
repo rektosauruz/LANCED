@@ -41,3 +41,13 @@ TO-DO LIST
 ** LANCED PANEL
 ** sqlite3 database
 ** kismet - blue_hydra - rtl_433 ==== > database integration
+
+
+
+sqlite3 data integration
+
+TABLE 1
+METHOD--------MAC------MANUF------LOCATION-----DATE
+WIFI                  
+BLUETOOTH
+subGhz
