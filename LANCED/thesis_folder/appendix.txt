@@ -58,7 +58,7 @@ fi
 #fi
 
 ####FIRST SECTION####
-##initialization of required folders used by zulfikar.sh
+##initialization of required folders used by LANCED.sh
 sudo mkdir /home/pi/lanced_logs
 sudo mkdir /home/pi/lanced_arch
 sudo mkdir /home/pi/lanced_arch/processed
@@ -74,7 +74,7 @@ sudo chmod 777 /home/pi/lanced_arch/datapool.txt
 
 #initialize v{1-20}
 for i in `seq 1 23`;do
-  c="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
+  c="`sed ""$i"q;d" /home/pi/LANCED/Zulfi_handler/dep.list`"
   eval "v${i}=${RED}[${c}]${RESET}"
 done
 
@@ -101,23 +101,23 @@ ledger
 
 ###using the dep.list, this iteration handles the apt-get update/upgrade/dist-upgrade
 for i in `seq 21 23`; do
-	a="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
-	sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list | xargs apt-get -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
-	echo -e "$a" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/error.list
+	a="`sed ""$i"q;d" /home/pi/LANCED/Zulfi_handler/dep.list`"
+	sed ""$i"q;d" /home/pi/LANCED/Zulfi_handler/dep.list | xargs apt-get -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
+	echo -e "$a" >> /home/pi/LANCED/Zulfi_handler/error.list
   ledger
 done
 
 ###using the dep.list this iteration hadnles the apt-get install
-echo -e "update - upgrade - dist-upgrade DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+echo -e "update - upgrade - dist-upgrade DONE" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 for i in `seq 1 19`; do
- 	a="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
- 	sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list | xargs apt-get install -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
- 	echo -e "$a" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/error.list
+ 	a="`sed ""$i"q;d" /home/pi/LANCED/Zulfi_handler/dep.list`"
+ 	sed ""$i"q;d" /home/pi/LANCED/Zulfi_handler/dep.list | xargs apt-get install -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
+ 	echo -e "$a" >> /home/pi/LANCED/Zulfi_handler/error.list
   ledger
 done
 
-#echo -e "essential files DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "essential files DONE" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 #sudo apt-get install locate
 #sudo apt-get install libpcre3 libpcre3-dev
@@ -140,12 +140,12 @@ ledger
 
 
 
-#echo -e "kismet DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "kismet DONE" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 ####SECOND SECTION####
 
 ##git folder
-#/home/pi/zulfikar/ZVL-Dev/Zulfi_handler/
+#/home/pi/LANCED/Zulfi_handler/
 #/etc/kismet/
 #/etc/kismet/kismet.conf
 #/etc/kismet/oui2.txt
@@ -155,7 +155,7 @@ ledger
 ##/etc/kismet/ folder contained file operations are handled here
 #sudo mv /usr/local/etc/kismet_drone.conf /usr/local/etc/kismet_drone.conf.orig
 sudo rm /usr/local/etc/kismet.conf
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/suidins/{kismet.conf,oui2.txt,correct_date.py} /usr/local/etc/
+sudo cp /home/pi/LANCED/config_files/suidins/{kismet.conf,oui2.txt,correct_date.py} /usr/local/etc/
 #sudo chmod 777 /etc/kismet/kismet.conf
 #sudo chmod 777 /etc/kismet/oui2.txt
 sudo chmod 777 /usr/local/etc/correct_date.py
@@ -166,7 +166,7 @@ sudo chmod 777 /usr/local/etc/correct_date.py
 holder="`sudo ip -o link | awk '{print $2,$(NF-2)}' | grep wlan0 | cut -d' ' -f2`"
 sed -i "198s/.*/filter_tracker=BSSID(!$holder)/" /usr/local/etc/kismet.conf
 
-#echo -e "/etc/kismet/ files done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "/etc/kismet/ files done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 
 ##/etc/default/gpsd
@@ -174,17 +174,17 @@ sed -i "198s/.*/filter_tracker=BSSID(!$holder)/" /usr/local/etc/kismet.conf
 ##/etc/default/ folder file operations are handled in this part
 sudo mv /etc/default/gpsd /etc/default/gpsd.origin
 sudo mv /etc/default/hostapd /etc/default/hostapd.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/{gpsd,hostapd} /etc/default/
+sudo cp /home/pi/LANCED/config_files/{gpsd,hostapd} /etc/default/
 #sudo chmod 777 /etc/default/gpsd
 #sudo chmod 777 /etc/default/hostapd
 
-#echo -e "gpsd - hostapd files done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "gpsd - hostapd files done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 #/etc/network/interfaces
 sudo mv /etc/network/interfaces /etc/network/interfaces.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/interfaces /etc/network/
+sudo cp /home/pi/LANCED/config_files/interfaces /etc/network/
 
-#echo -e "interfaces done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "interfaces done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 
 ####/etc/hostapd/###
@@ -192,9 +192,9 @@ sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/interfaces /etc/network/
 if [ -e /etc/hostapd/hostapd.conf ]; then
   sudo mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.origin
 fi
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/hostapd.conf /etc/hostapd/
+sudo cp /home/pi/LANCED/config_files/hostapd.conf /etc/hostapd/
 
-#echo -e "hostapd.conf done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "hostapd.conf done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 #allow ssh
 #change the default port if needed
@@ -205,23 +205,23 @@ sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/hostapd.conf /etc/hostapd/
 #change timezone
 #sudo raspi-config
 
-#echo -e "raspi-config done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "raspi-config done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 ####/etc/####
 
 #/etc/dnsmasq.conf file operations are handled in this part
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/dnsmasq.conf /etc/
+sudo cp /home/pi/LANCED/config_files/dnsmasq.conf /etc/
 
 
 #/etc/dhcpcd.conf file operations are handled in this part
 sudo mv /etc/dhcpcd.conf /etc/dhcpcd.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/dhcpcd.conf /etc/
+sudo cp /home/pi/LANCED/config_files/dhcpcd.conf /etc/
 
 
 #/etc/sysctl.conf file operations are handled in this part
 sudo mv /etc/sysctl.conf /etc/sysctl.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/sysctl.conf /etc/
+sudo cp /home/pi/LANCED/config_files/sysctl.conf /etc/
 
 
 #ipv4 port forward section
@@ -233,21 +233,21 @@ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
 #/etc/rc.local
 sudo mv /etc/rc.local /etc/rc.local.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/rc.local /etc/
+sudo cp /home/pi/LANCED/config_files/rc.local /etc/
 
 sudo systemctl disable dhcpcd.service > /dev/null 2>&1
 
 ##transfer the latest a.sh file to /home/pi by renaming the script and set priviliges.
-sudo mv /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/asuidroot.sh /home/pi/asuidroot.sh
+sudo mv /home/pi/LANCED/Zulfi_handler/asuidroot.sh /home/pi/asuidroot.sh
 sudo chmod 777 /home/pi/asuidroot.sh
 
 sleep 5
 echo "${RED}Shutting down!${RESET}"
 sudo shutdown +0
 
-#echo -e "/etc/ done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "/etc/ done" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
-#echo -e "FINALIZED" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "FINALIZED" >> /home/pi/LANCED/Zulfi_handler/progress.list
 
 #=======================================================================================================================================================
 #=======================================================================================================================================================
@@ -395,7 +395,7 @@ fi
 
 
 ##check if hostapd is active or not, this option is for monitored runs and while no hostapd is needed.
-##also ip address is printed in the Zulfikar GUI for easy usage.
+##also ip address is printed in the LANCED GUI for easy usage.
 apdip() {
 
 if [ -z "`pidof hostapd`" ]; then
@@ -411,7 +411,7 @@ fi
 apdip
 
 
-##this is data sorter function for the zulfikar. After every use, data is collected under Zulfi_logs is first transferred to Zulfi_arch
+##this is data sorter function for the LANCED. After every use, data is collected under Zulfi_logs is first transferred to Zulfi_arch
 d_sorter() {
 
 ##declare
@@ -657,7 +657,7 @@ fi
 
 #}
 #var5="${RED}READY${RESET}"
-##zulfikar menu
+##LANCED menu
 while :
 do
     #clear
