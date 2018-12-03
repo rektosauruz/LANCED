@@ -13,6 +13,7 @@ https://github.com/pwnieexpress/blue_hydra
 
 Program          status
 
+```
 hostapd            ok
 blue_hydra         ok
 ppp                ok
@@ -25,6 +26,7 @@ merbanan/rtl_433   ok
 
 seems there is no issue with merbanan/rtl_433
 #there is an issue with merbanan/rtl_433
+```
 
 ## NOT CRITICAL ##
 PLL not locked error issuing caused by not properly compiled drivers
