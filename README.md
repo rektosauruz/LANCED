@@ -55,3 +55,22 @@ WIFI
 BLUETOOTH
 subGhz
 ```
+
+```
+prot type for the csv file
+"TYPE","Manuf","BSSID","MAC","TIMESTAMP","LAT","LON","ALT"
+```
+
+```
+giskismet
+
+use the giskismet to upload the data sqlite3
+for the blue_hydra, all data is passed to the blue_hydra.db
+for the rtl_433, there must be a framework to save the data to the db
+
+for the formatting, a csv file can be formed for these three software
+in that case after constructing a csv file, a wrapper for the sqlite3 data is handled by a python script.
+after all these, a parser may be needed to read data from all three databases and inform a
+new merged csv data file to populate an ultimate db for all three kind of devices.
+
+```
