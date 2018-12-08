@@ -74,3 +74,9 @@ after all these, a parser may be needed to read data from all three databases an
 new merged csv data file to populate an ultimate db for all three kind of devices.
 
 ```
+
+
+```
+apply range extender for emergency
+fallback 
+```
