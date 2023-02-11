@@ -31,19 +31,19 @@ openstreetmap
 
 KISMET-CONFIGURATION
 =================
-#Kismet config file modified for Zulfikar with two(2)
+#Kismet config file modified for lanced with two(2)
 #TP-LINK TL-WN722N wireless NICs and a pl2303 GPS module.
 #FILE LOCATION = /etc/kismet/kismet.conf
 
 
 #create kismet log folder
-sudo mkdir /home/pi/zulfi_logs
-chmod 777 /home/pi/zulfi_logs
+sudo mkdir /home/pi/lanced_logs
+chmod 777 /home/pi/lanced_logs
 
 
 #change line in kismet.conf
 # Prefix of where we log (as used in the logtemplate later)
-logprefix=/home/pi/zulfi_logs
+logprefix=/home/pi/lanced_logs
 
 
 #change line in kismet.conf ncsource
@@ -83,19 +83,19 @@ filter_tracker=BSSID(!--:--:--:--:--:--)
 
 ZVLFIKAR-REQUIRED FOLDERS
 =================
-#to use kismet with zulfikar(a.sh), some folders must be placed
-#FOLDER LOCATION = /home/pi/zulfi_logs
-#FOLDER LOCATION = /home/pi/zulfi_arch
-#FILE LOCATION = /home/pi/zulfi_arch/BSSID.list
-#FILE LOCATION = /home/pi/zulfi_arch/datapool.txt
-sudo mkdir /home/pi/zulfi_logs
-sudo chmod 777 /home/pi/zulfi_logs
-sudo mkdir /home/pi/zulfi_arch
-sudo chmod 777 /home/pi/zulfi_arch
-sudo touch /home/pi/zulfi_arch/BSSID.list
-sudo chmod 777 /home/pi/zulfi_arch/BSSID.list
-sudo touch /home/pi/zulfi_arch/datapool.txt
-sudo chmod 777 /home/pi/zulfi_arch/datapool.txt
+#to use kismet with lanced(a.sh), some folders must be placed
+#FOLDER LOCATION = /home/pi/lanced_logs
+#FOLDER LOCATION = /home/pi/lanced_arch
+#FILE LOCATION = /home/pi/lanced_arch/BSSID.list
+#FILE LOCATION = /home/pi/lanced_arch/datapool.txt
+sudo mkdir /home/pi/lanced_logs
+sudo chmod 777 /home/pi/lanced_logs
+sudo mkdir /home/pi/lanced_arch
+sudo chmod 777 /home/pi/lanced_arch
+sudo touch /home/pi/lanced_arch/BSSID.list
+sudo chmod 777 /home/pi/lanced_arch/BSSID.list
+sudo touch /home/pi/lanced_arch/datapool.txt
+sudo chmod 777 /home/pi/lanced_arch/datapool.txt
 =================
 
 
