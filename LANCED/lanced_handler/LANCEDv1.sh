@@ -130,7 +130,7 @@ fi
 
 
 ##check if hostapd is active or not, this option is for monitored runs and while no hostapd is needed.
-##also ip address is printed in the lancedkar GUI for easy usage.
+##also ip address is printed in the lanced GUI for easy usage.
 apdip() {
 
 if [ -z "`pidof hostapd`" ]; then
@@ -146,7 +146,7 @@ fi
 apdip
 
 
-##this is data sorter function for the lancedkar. After every use, data is collected under lanced_logs is first transferred to lanced_arch
+##this is data sorter function for the lanced. After every use, data is collected under lanced_logs is first transferred to lanced_arch
 d_sorter() {
 
 ##declare
@@ -392,7 +392,7 @@ fi
 
 #}
 #var5="${RED}READY${RESET}"
-##lancedkar menu
+##lanced menu
 while :
 do
     #clear
