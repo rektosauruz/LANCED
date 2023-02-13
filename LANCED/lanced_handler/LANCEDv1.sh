@@ -10,14 +10,14 @@
     #================================================================================
 
 #File Declarations
-#/home/pi/zulfi_logs/                    [raw data files are saved here from kismet_server.]
-#/home/pi/zulfi_arch/                    [files are transferred after each run to this location to be processed.]
-#/home/pi/zulfi_arch/{date}/             [a dated folder is created for that day.]
-#/home/pi/zulfi_arch/BSSID.list          [unique MACs are held here for counting and comparison for uniqueness.]
-#/home/pi/zulfi_arch/datapool.txt        [datapool.txt holds the unique data, populated after each run, a simple database file holds raw data.]
-#/home/pi/zulfi_arch/temp.list           [for each run MACs in the respective .nettxt file are passed to temp.list for comparison with BSSID.list]
-#/home/pi/zulfi_arch_processed/          [processed files are saved here under the same respective dates.]
-#/home/pi/zulfi_arch_processed/{date}/   [dated folders are directly transferred under prcessed section after the sequence.]
+#/home/pi/lanced_logs/                    [raw data files are saved here from kismet_server.]
+#/home/pi/lanced_arch/                    [files are transferred after each run to this location to be processed.]
+#/home/pi/lanced_arch/{date}/             [a dated folder is created for that day.]
+#/home/pi/lanced_arch/BSSID.list          [unique MACs are held here for counting and comparison for uniqueness.]
+#/home/pi/lanced_arch/datapool.txt        [datapool.txt holds the unique data, populated after each run, a simple database file holds raw data.]
+#/home/pi/lanced_arch/temp.list           [for each run MACs in the respective .nettxt file are passed to temp.list for comparison with BSSID.list]
+#/home/pi/lanced_arch_processed/          [processed files are saved here under the same respective dates.]
+#/home/pi/lanced_arch_processed/{date}/   [dated folders are directly transferred under prcessed section after the sequence.]
 #/home/pi/etc/kismet/timechk             [timechk file is created after the first date correction, at the end of each run, this file is removed.]
 
 # Color Declerations
@@ -97,9 +97,9 @@ if [ -n "$kiss_state" ]; then
 fi
 
 #refresh() {
-#if [ -n "`ls -A /home/pi/zulfi_logs/`" ]; then
-#   tempcalc="`ls /home/pi/zulfi_logs/ | grep .nettxt`"
-#   kk="${GREEN}`cat /home/pi/zulfi_logs/"$tempcalc" | grep Network | uniq | wc -l`${RESET}"
+#if [ -n "`ls -A /home/pi/lanced_logs/`" ]; then
+#   tempcalc="`ls /home/pi/lanced_logs/ | grep .nettxt`"
+#   kk="${GREEN}`cat /home/pi/lanced_logs/"$tempcalc" | grep Network | uniq | wc -l`${RESET}"
 #else
 #   kk="${GREEN}0${RESET}"
 #fi
@@ -110,7 +110,7 @@ fi
 
 
 count() {
-kk="${RED}`wc -l /home/pi/zulfi_arch/BSSID.list | cut -d' ' -f1`${RESET}"
+kk="${RED}`wc -l /home/pi/lanced_arch/BSSID.list | cut -d' ' -f1`${RESET}"
 }
 
 count
@@ -130,7 +130,7 @@ fi
 
 
 ##check if hostapd is active or not, this option is for monitored runs and while no hostapd is needed.
-##also ip address is printed in the Zulfikar GUI for easy usage.
+##also ip address is printed in the lancedkar GUI for easy usage.
 apdip() {
 
 if [ -z "`pidof hostapd`" ]; then
@@ -146,22 +146,22 @@ fi
 apdip
 
 
-##this is data sorter function for the zulfikar. After every use, data is collected under Zulfi_logs is first transferred to Zulfi_arch
+##this is data sorter function for the lancedkar. After every use, data is collected under lanced_logs is first transferred to lanced_arch
 d_sorter() {
 
 ##declare
 datum="`date +%Y%m%d`"
-locA=/home/pi/zulfi_logs/
-locB=/home/pi/zulfi_arch/
-locC=/home/pi/zulfi_arch/processed/
+locA=/home/pi/lanced_logs/
+locB=/home/pi/lanced_arch/
+locC=/home/pi/lanced_arch/processed/
 
-#check for dated folder /home/pi/zulfi_arch/ . Multiple runs in the same day are collected under the same folder such as 20180513
+#check for dated folder /home/pi/lanced_arch/ . Multiple runs in the same day are collected under the same folder such as 20180513
 if [ ! -d "$locB""$datum" ];then
     sudo mkdir "$locB""$datum"
     sudo chmod 777 "$locB""$datum"/
 fi
 
-#check for dated folder /home/pi/zulfi_arch/processed/
+#check for dated folder /home/pi/lanced_arch/processed/
 if [ ! -d "$locC""$datum" ];then
     sudo mkdir "$locC""$datum"
     sudo chmod 777 "$locC""$datum"/
@@ -174,8 +174,8 @@ sudo chmod 777 "$locB"datac.list
 ##check for different dated files then pass it to datac.list
 echo "`ls "$locA" | grep "$datum"`" >> "$locB"datac.list
 
-##pass the dated files from zulfi_logs to respective dated folder
-for i in $(cat /home/pi/zulfi_arch/datac.list);do
+##pass the dated files from lanced_logs to respective dated folder
+for i in $(cat /home/pi/lanced_arch/datac.list);do
     #copy option
    sudo cp "$locA"$i "$locB""$datum"
 done
@@ -186,7 +186,7 @@ sudo rm -r "$locA"*
 sudo rm "$locB"datac.list
 
 
-#check for datapool file, create at /home/pi/zulfi_arch/ if needed
+#check for datapool file, create at /home/pi/lanced_arch/ if needed
 if [ ! -f "$locB""$datum"/datapool.txt ];then
     sudo touch "$locB"datapool.txt
     sudo chmod 777 "$locB"datapool.txt
@@ -195,8 +195,8 @@ fi
 
 ####check for temporary list, this list is used to compare with BSSID.list to keep track of unique MACs for the run.
 if [ ! -f "$locB""$datum"/templ.list ];then
-   sudo touch /home/pi/zulfi_arch/templ.list
-   sudo chmod 777 /home/pi/zulfi_arch/templ.list
+   sudo touch /home/pi/lanced_arch/templ.list
+   sudo chmod 777 /home/pi/lanced_arch/templ.list
 fi
 
 ##this line gets the exact name of the .nettxt file then picks the MACs then pushed it to temprary list named templ.list
@@ -205,20 +205,20 @@ echo -e "`grep "Network " "$locB""$datum"/"$filenom" | cut -d' ' -f4`" >> "$locB
 
 ##comparison is made in this for loop. For every MAC address located in templ.list, BSSID.list is checked, if no match then the MAC is unique.
 ##unique MACs then passed to datapool.txt file with certain lines(line 125). Also BSSID list is populated with new unique MACs.
-for i in $(cat /home/pi/zulfi_arch/templ.list);do
+for i in $(cat /home/pi/lanced_arch/templ.list);do
 	if [ "`grep "$i" "$locB"BSSID.list`" == "" ];then
 		test1="`grep "Network " "$locB""$datum"/"$filenom" | grep "$i"`"
                 sed -n "/$test1/,/Network /{/$test1/{p};/Network /{d};p}" "$locB""$datum"/"$filenom" >> "$locB"datapool.txt
-		echo -e "$i" >> /home/pi/zulfi_arch/BSSID.list
+		echo -e "$i" >> /home/pi/lanced_arch/BSSID.list
 
     fi
 done
 
 ##temporary list is cleared.
-sudo rm /home/pi/zulfi_arch/templ.list
+sudo rm /home/pi/lanced_arch/templ.list
 
-##moving the processed dated folder under zulfi_arch to processed folder under zulfi_arch
-sudo mv -v /home/pi/zulfi_arch/"$datum"/* /home/pi/zulfi_arch/processed/"$datum"/ 1>/dev/null
+##moving the processed dated folder under lanced_arch to processed folder under lanced_arch
+sudo mv -v /home/pi/lanced_arch/"$datum"/* /home/pi/lanced_arch/processed/"$datum"/ 1>/dev/null
 
 count
 
@@ -392,7 +392,7 @@ fi
 
 #}
 #var5="${RED}READY${RESET}"
-##zulfikar menu
+##lancedkar menu
 while :
 do
     #clear
@@ -428,7 +428,7 @@ EOF
 start_ks() {
 #refresh
 #create a file named by YearMonthDay
-#sudo mkdir /home/pi/zulfi_logs/"`date +%Y%m%d`"
+#sudo mkdir /home/pi/lanced_logs/"`date +%Y%m%d`"
 if [ "$var5" == "${GREEN}READY${RESET}" ];then
 /usr/local/bin/kismet_server --daemonize > /dev/null 2>&1
 var5="${RED}ARMED${RESET}"
@@ -446,7 +446,7 @@ stop_ks() {
 
 sudo killall kismet_server
 sleep 3
-if [ -z "$(ls -A /home/pi/zulfi_logs)" ]; then
+if [ -z "$(ls -A /home/pi/lanced_logs)" ]; then
 	return 1
 else
     d_sorter

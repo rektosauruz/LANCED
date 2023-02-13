@@ -1,6 +1,6 @@
 #!/bin/bash
     #title          :installer.sh
-    #description    :installer tool for zulfikar
+    #description    :installer tool for lancedkar
     #author         :rektosauruz
     #date           :20180916
     #version        :v1.2
@@ -10,18 +10,18 @@
     #============================================
 
 #File Declarations
-#/home/pi/zulfi_logs/                    [raw data files are saved here from kismet_server.]
-#/home/pi/zulfi_arch/                    [files are transferred after each run to this location to be processed.]
-#/home/pi/zulfi_arch/{date}/             [a dated folder is created for that day.]
-#/home/pi/zulfi_arch/BSSID.list          [unique MACs are held here for counting and comparison for uniqueness.]
-#/home/pi/zulfi_arch/datapool.txt        [datapool.txt holds the unique data, populated after each run, a simple database file holds raw data.]
-#/home/pi/zulfi_arch/temp.list           [for each run MACs in the respective .nettxt file are passed to temp.list for comparison with BSSID.list]
-#/home/pi/zulfi_arch_processed/          [processed files are saved here under the same respective dates.]
-#/home/pi/zulfi_arch_processed/{date}/   [dated folders are directly transferred under prcessed section after the sequence.]
+#/home/pi/lanced_logs/                    [raw data files are saved here from kismet_server.]
+#/home/pi/lanced_arch/                    [files are transferred after each run to this location to be processed.]
+#/home/pi/lanced_arch/{date}/             [a dated folder is created for that day.]
+#/home/pi/lanced_arch/BSSID.list          [unique MACs are held here for counting and comparison for uniqueness.]
+#/home/pi/lanced_arch/datapool.txt        [datapool.txt holds the unique data, populated after each run, a simple database file holds raw data.]
+#/home/pi/lanced_arch/temp.list           [for each run MACs in the respective .nettxt file are passed to temp.list for comparison with BSSID.list]
+#/home/pi/lanced_arch_processed/          [processed files are saved here under the same respective dates.]
+#/home/pi/lanced_arch_processed/{date}/   [dated folders are directly transferred under prcessed section after the sequence.]
 #/etc/kismet/timechk             [timechk file is created after the first date correction, at the end of each run, this file is removed.]
 
 ##For both GUI and CLI, automation script
-##will automatically install and configure Zulfikar system to latest version.
+##will automatically install and configure lancedkar system to latest version.
 ##For debugging, an echo can be return if a spesific process is failed.
 
 
@@ -49,23 +49,23 @@ fi
 #fi
 
 ####FIRST SECTION####
-##initialization of required folders used by zulfikar.sh
-sudo mkdir /home/pi/zulfi_logs
-sudo mkdir /home/pi/zulfi_arch
-sudo mkdir /home/pi/zulfi_arch/processed
-sudo touch /home/pi/zulfi_arch/BSSID.list
-sudo touch /home/pi/zulfi_arch/datapool.txt
+##initialization of required folders used by lancedkar.sh
+sudo mkdir /home/pi/lanced_logs
+sudo mkdir /home/pi/lanced_arch
+sudo mkdir /home/pi/lanced_arch/processed
+sudo touch /home/pi/lanced_arch/BSSID.list
+sudo touch /home/pi/lanced_arch/datapool.txt
 
-sudo chmod 777 /home/pi/zulfi_logs
-sudo chmod 777 /home/pi/zulfi_arch
-sudo chmod 777 /home/pi/zulfi_arch/processed
-sudo chmod 777 /home/pi/zulfi_arch/BSSID.list
-sudo chmod 777 /home/pi/zulfi_arch/datapool.txt
+sudo chmod 777 /home/pi/lanced_logs
+sudo chmod 777 /home/pi/lanced_arch
+sudo chmod 777 /home/pi/lanced_arch/processed
+sudo chmod 777 /home/pi/lanced_arch/BSSID.list
+sudo chmod 777 /home/pi/lanced_arch/datapool.txt
 
 
 #initialize v{1-20}
 for i in `seq 1 23`;do
-  c="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
+  c="`sed ""$i"q;d" /home/pi/lancedkar/ZVL-Dev/lanced_handler/dep.list`"
   eval "v${i}=${RED}[${c}]${RESET}"
 done
 
@@ -92,23 +92,23 @@ ledger
 
 ###using the dep.list, this iteration handles the apt-get update/upgrade/dist-upgrade
 for i in `seq 21 23`; do
-	a="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
-	sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list | xargs apt-get -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
-	echo -e "$a" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/error.list
+	a="`sed ""$i"q;d" /home/pi/lancedkar/ZVL-Dev/lanced_handler/dep.list`"
+	sed ""$i"q;d" /home/pi/lancedkar/ZVL-Dev/lanced_handler/dep.list | xargs apt-get -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
+	echo -e "$a" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/error.list
   ledger
 done
 
 ###using the dep.list this iteration hadnles the apt-get install
-echo -e "update - upgrade - dist-upgrade DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+echo -e "update - upgrade - dist-upgrade DONE" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 for i in `seq 1 19`; do
- 	a="`sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list`"
- 	sed ""$i"q;d" /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/dep.list | xargs apt-get install -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
- 	echo -e "$a" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/error.list
+ 	a="`sed ""$i"q;d" /home/pi/lancedkar/ZVL-Dev/lanced_handler/dep.list`"
+ 	sed ""$i"q;d" /home/pi/lancedkar/ZVL-Dev/lanced_handler/dep.list | xargs apt-get install -y > /dev/null 2>&1 && eval "v${i}=${GREEN}[${a}]${RESET}" ||
+ 	echo -e "$a" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/error.list
   ledger
 done
 
-#echo -e "essential files DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "essential files DONE" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 #sudo apt-get install locate
 #sudo apt-get install libpcre3 libpcre3-dev
@@ -131,12 +131,12 @@ ledger
 
 
 
-#echo -e "kismet DONE" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "kismet DONE" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 ####SECOND SECTION####
 
 ##git folder
-#/home/pi/zulfikar/ZVL-Dev/Zulfi_handler/
+#/home/pi/lancedkar/ZVL-Dev/lanced_handler/
 #/etc/kismet/
 #/etc/kismet/kismet.conf
 #/etc/kismet/oui2.txt
@@ -146,7 +146,7 @@ ledger
 ##/etc/kismet/ folder contained file operations are handled here
 #sudo mv /usr/local/etc/kismet_drone.conf /usr/local/etc/kismet_drone.conf.orig
 sudo rm /usr/local/etc/kismet.conf
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/suidins/{kismet.conf,oui2.txt,correct_date.py} /usr/local/etc/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/suidins/{kismet.conf,oui2.txt,correct_date.py} /usr/local/etc/
 #sudo chmod 777 /etc/kismet/kismet.conf
 #sudo chmod 777 /etc/kismet/oui2.txt
 sudo chmod 777 /usr/local/etc/correct_date.py
@@ -157,7 +157,7 @@ sudo chmod 777 /usr/local/etc/correct_date.py
 holder="`sudo ip -o link | awk '{print $2,$(NF-2)}' | grep wlan0 | cut -d' ' -f2`"
 sed -i "198s/.*/filter_tracker=BSSID(!$holder)/" /usr/local/etc/kismet.conf
 
-#echo -e "/etc/kismet/ files done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "/etc/kismet/ files done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 
 ##/etc/default/gpsd
@@ -165,17 +165,17 @@ sed -i "198s/.*/filter_tracker=BSSID(!$holder)/" /usr/local/etc/kismet.conf
 ##/etc/default/ folder file operations are handled in this part
 sudo mv /etc/default/gpsd /etc/default/gpsd.origin
 sudo mv /etc/default/hostapd /etc/default/hostapd.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/{gpsd,hostapd} /etc/default/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/{gpsd,hostapd} /etc/default/
 #sudo chmod 777 /etc/default/gpsd
 #sudo chmod 777 /etc/default/hostapd
 
-#echo -e "gpsd - hostapd files done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "gpsd - hostapd files done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 #/etc/network/interfaces
 sudo mv /etc/network/interfaces /etc/network/interfaces.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/interfaces /etc/network/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/interfaces /etc/network/
 
-#echo -e "interfaces done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "interfaces done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 
 ####/etc/hostapd/###
@@ -183,9 +183,9 @@ sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/interfaces /etc/network/
 if [ -e /etc/hostapd/hostapd.conf ]; then
   sudo mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.origin
 fi
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/hostapd.conf /etc/hostapd/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/hostapd.conf /etc/hostapd/
 
-#echo -e "hostapd.conf done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "hostapd.conf done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 #allow ssh
 #change the default port if needed
@@ -196,23 +196,23 @@ sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/hostapd.conf /etc/hostapd/
 #change timezone
 #sudo raspi-config
 
-#echo -e "raspi-config done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "raspi-config done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
 ####/etc/####
 
 #/etc/dnsmasq.conf file operations are handled in this part
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/dnsmasq.conf /etc/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/dnsmasq.conf /etc/
 
 
 #/etc/dhcpcd.conf file operations are handled in this part
 sudo mv /etc/dhcpcd.conf /etc/dhcpcd.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/dhcpcd.conf /etc/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/dhcpcd.conf /etc/
 
 
 #/etc/sysctl.conf file operations are handled in this part
 sudo mv /etc/sysctl.conf /etc/sysctl.conf.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/sysctl.conf /etc/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/sysctl.conf /etc/
 
 
 #ipv4 port forward section
@@ -224,18 +224,18 @@ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
 #/etc/rc.local
 sudo mv /etc/rc.local /etc/rc.local.origin
-sudo cp /home/pi/zulfikar/ZVL-Dev/config_files/rc.local /etc/
+sudo cp /home/pi/lancedkar/ZVL-Dev/config_files/rc.local /etc/
 
 sudo systemctl disable dhcpcd.service > /dev/null 2>&1
 
 ##transfer the latest a.sh file to /home/pi by renaming the script and set priviliges.
-sudo mv /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/asuidroot.sh /home/pi/asuidroot.sh
+sudo mv /home/pi/lancedkar/ZVL-Dev/lanced_handler/asuidroot.sh /home/pi/asuidroot.sh
 sudo chmod 777 /home/pi/asuidroot.sh
 
 sleep 5
 echo "${RED}Shutting down!${RESET}"
 sudo shutdown +0
 
-#echo -e "/etc/ done" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "/etc/ done" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
 
-#echo -e "FINALIZED" >> /home/pi/zulfikar/ZVL-Dev/Zulfi_handler/progress.list
+#echo -e "FINALIZED" >> /home/pi/lancedkar/ZVL-Dev/lanced_handler/progress.list
